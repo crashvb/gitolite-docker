@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+
+function log
+{
+       echo "$(date +%Y-%m-%d_%H:%M:%S) | $(basename $0) | $@"
+}
+export -f log
+
+# Generate a working copy of the current gitolite-admin repository
+log "Trusting current repository ..."
+ssh-keyscan localhost >> ~/.ssh/known_hosts
+log "Replicating current admin repository ..."
+git clone git@localhost:gitolite-admin.git ~/gitolite-admin.git
+
+rm --force $0
+

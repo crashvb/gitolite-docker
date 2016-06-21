@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -e
+
+root_repos=$GITOLITE_HOME/repositories
+
+# Configure: gitolite
+if [[ ! -e $EP_RUN ]] ; then
+	log "Configuring $(basename $0) for first run ..."
+
+	log "Applying ownership and permissions ..."
+	set +e
+	find $GITOLITE_HOME \( \! -user git -o \! -group git \) -exec chown git:git {} \;
+	if [[ -d $root_repos ]] ; then
+		find $root_repos -type d \! -perm 0750 -exec chmod 0750 {} \;
+		find $root_repos -type f \! -perm 0640 -exec chmod 0640 {} \;
+	fi
+	set -e
+
+	if [[ -d $root_repos/gitolite-admin.git ]] ; then
+		log "Skipping repository initialization ..."
+	else
+		# Empty repository
+		log "Initializing repository ..."
+		install --group=git --mode=0644 --owner=git /root/.ssh/id_rsa.pub /tmp/
+		su - git --command="gl-setup -q /tmp/id_rsa.pub"
+		sed --in-place 's/0077/0027/g' $GITOLITE_HOME/.gitolite.rc
+		rm --force /tmp/id_rsa.pub
+
+		# Clean-up sample hooks
+		log "Removing sample hooks ..."
+		rm --force $root_repos/*/hooks/*.hub-sample $root_repos/*/hooks/*.sample $root_repos/*/hooks/post-receive.mirrorpush
+	fi
+fi
+

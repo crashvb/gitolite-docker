@@ -1,0 +1,11 @@
+[user]
+	name = "Gitolite Root"
+	email = root@gitolite
+[color]
+	branch = auto
+	diff = auto
+	status = auto
+[push]
+	default = matching
+[core]
+	editor = vim

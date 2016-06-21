@@ -1,0 +1,27 @@
+--- gitweb.cgi	2015-01-13 19:47:39.000000000 +0000
++++ gitweb.cgi.new	2015-10-14 15:17:34.692863492 +0000
+@@ -273,15 +270,17 @@
+ our %highlight_ext = (
+ 	# main extensions, defining name of syntax;
+ 	# see files in /usr/share/highlight/langDefs/ directory
+-	(map { $_ => $_ } qw(py rb java css js tex bib xml awk bat ini spec tcl sql)),
++	(map { $_ => $_ } qw(py rb java css js tex bib awk bat spec tcl sql)),
+ 	# alternate extensions, see /etc/highlight/filetypes.conf
+ 	(map { $_ => 'c'   } qw(c h)),
+-	(map { $_ => 'sh'  } qw(sh bash zsh ksh)),
+-	(map { $_ => 'cpp' } qw(cpp cxx c++ cc)),
+-	(map { $_ => 'php' } qw(php php3 php4 php5 phps)),
+-	(map { $_ => 'pl'  } qw(pl perl pm)), # perhaps also 'cgi'
+-	(map { $_ => 'make'} qw(make mak mk)),
+-	(map { $_ => 'xml' } qw(xml xhtml html htm)),
++	(map { $_ => 'cs'  } qw(cs)),
++	(map { $_ => 'cpp' } qw(cc cpp cxx c++)),
++	(map { $_ => 'ini' } qw(ini prefs properties)),
++	(map { $_ => 'make'} qw(mak make mk)),
++	(map { $_ => 'php' } qw(php phps php3 php4 php5)),
++	(map { $_ => 'pl'  } qw(perl pl pm)), # perhaps also 'cgi'
++	(map { $_ => 'sh'  } qw(bash ksh sh zsh)),
++	(map { $_ => 'xml' } qw(classpath config csproj filters htm html project resx settings vcproj vcxproj xml xsd)),
+ );
+ 
+ # You define site-wide feature defaults here; override them with

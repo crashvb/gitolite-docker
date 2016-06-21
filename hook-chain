@@ -1,0 +1,26 @@
+#! /bin/bash
+
+# 15-10-23 - R. Davis - Initial implementation.
+
+hook=$(basename $0)
+
+while read refOld refNew refName
+do
+	# if [[ $refName =~ ^refs/heads/master$ ]] ; then
+
+	for i in $GIT_DIR/hooks/$hook.*
+	do
+		if [[ -x "$i" ]] ; then
+			echo "Invoking: $i ..."
+			echo $refOld $refNew $refName | $i
+			rc=$?
+
+			if [[ "$rc" -ne "0" ]] ; then
+				echo "WARN: Hook $i exited with return code: $rc!"
+			fi
+		fi
+	done
+done
+
+exit 0
+

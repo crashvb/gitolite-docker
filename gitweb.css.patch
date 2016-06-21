@@ -1,0 +1,35 @@
+--- gitweb.css	Fri Jul 26 11:25:57 2013
++++ gitweb.css.new	Thu Apr 16 11:00:12 2015
+@@ -578,17 +578,19 @@
+ 
+ /* Highlighting theme definition: */
+ 
+-.num    { color:#6ecf36; }
+-.esc    { color:#ff00ff; }
+-.str    { color:#ff00d3; background-color: #edc9ec }
+-.dstr   { color:#818100; }
+-.slc    { color:#838183; font-style:italic; }
+-.com    { color:#838183; font-style:italic; }
+-.dir    { color:#008200; }
+-.sym    { color:#000000; }
+-.line   { color:#555555; }
+-.kwa    { color:#666666; font-weight:bold; }
+-.kwb    { color:#6b3099; }
+-.kwc    { color:#d4663d; }
+-.kwd    { color:#2928ff; }
++/* 2013-07-26 - R. Davis - Modified to match HTML-Kit (00ff00 are outstanding) */
++
++.num    { color: #800000; }
++.esc    { color: #808080; }
++.str    { color: #008080; }
++.dstr   { color: #808080; }
++.slc    { color: #008000; font-style: italic; }
++.com    { color: #008000; font-style: italic; }
++.dir    { color: #808080; }
++.sym    { color: #808080; }
++.line   { color: #4183C4; }
++.kwa    { color: #000080; font-weight: bold; }
++.kwb    { color: #000080; }
++.kwc    { color: #000080; font-weight: bold; }
++.kwd    { color: #3030ff; }
+ 

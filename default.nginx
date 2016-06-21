@@ -1,0 +1,23 @@
+server {
+	listen 80 default;
+
+	root /usr/share/gitweb/;
+	index index.cgi index.html index.htm;
+
+	keepalive_timeout 60;
+
+	location / {
+                auth_basic "GitWeb Secure Access";
+                auth_basic_user_file /usr/share/gitweb/.htpasswd;
+	}
+
+	location ~ \.cgi$ {
+		include fastcgi_params;
+		fastcgi_index index.cgi;
+		fastcgi_param GITWEB_CONFIG /etc/gitweb.conf;
+		fastcgi_param SCRIPT_NAME $uri;
+		fastcgi_pass unix:/var/run/fcgiwrap.sock;
+		gzip off;
+	}
+}
+
