@@ -2,14 +2,14 @@ FROM crashvb/nginx:latest
 MAINTAINER Richard Davis <crashvb@gmail.com>
 
 # Install packages, download files ...
-RUN docker-apt gitolite gitweb highlight markdown openssl pandoc patch && \
+RUN docker-apt cgi.pm gitolite3 gitweb highlight markdown openssl pandoc patch && \
 	git clone git://github.com/kogakure/gitweb-theme.git /usr/share/gitweb-theme && \
 	rm --force --recursive /usr/share/gitweb-theme/.git
 
 # Configure: gitolite
 ENV GITOLITE_HOME=/var/lib/git
-ADD hook-chain post-receive.markdown /usr/share/gitolite/hooks/common/
-RUN useradd --comment "Gitolite" --home=${GITOLITE_HOME} --shell=/bin/bash git
+RUN useradd --comment "Gitolite" --home=${GITOLITE_HOME} --shell=/bin/bash git && \
+	sed --in-place '/^umask/s/0077/0027/g' /usr/share/gitolite3/lib/Gitolite/Rc.pm
 
 # Configure: gitweb
 ENV GITWEB_HOME=/usr/share/gitweb GITWEB_THEME=/usr/share/gitweb-theme

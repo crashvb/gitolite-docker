@@ -23,7 +23,7 @@ if [[ ! -e $EP_RUN ]] ; then
 		# Empty repository
 		log "Initializing repository ..."
 		install --group=git --mode=0644 --owner=git /root/.ssh/id_rsa.pub /tmp/
-		su - git --command="gl-setup -q /tmp/id_rsa.pub"
+		su - git --command="gitolite setup -pk /tmp/id_rsa.pub"
 		sed --in-place 's/0077/0027/g' $GITOLITE_HOME/.gitolite.rc
 		rm --force /tmp/id_rsa.pub
 
