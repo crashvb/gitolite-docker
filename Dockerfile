@@ -2,7 +2,7 @@ FROM crashvb/nginx:latest
 MAINTAINER Richard Davis <crashvb@gmail.com>
 
 # Install packages, download files ...
-RUN docker-apt cgi.pm gitolite3 gitweb highlight markdown openssl pandoc patch && \
+RUN docker-apt cgi.pm gitolite3 gitweb highlight markdown locales openssl pandoc patch && \
 	git clone git://github.com/kogakure/gitweb-theme.git /usr/share/gitweb-theme && \
 	rm --force --recursive /usr/share/gitweb-theme/.git
 
