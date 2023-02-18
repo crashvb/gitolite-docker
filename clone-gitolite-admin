@@ -1,12 +1,8 @@
 #!/bin/bash
 
-set -e
+source /usr/local/lib/entrypoint.sh
 
-function log
-{
-       echo "$(date +%Y-%m-%d_%H:%M:%S) | $(basename $0) | $@"
-}
-export -f log
+set -e -o pipefail
 
 # Generate a working copy of the current gitolite-admin repository
 log "Trusting current repository ..."
@@ -14,5 +10,5 @@ ssh-keyscan localhost >> ~/.ssh/known_hosts
 log "Replicating current admin repository ..."
 git clone git@localhost:gitolite-admin.git ~/gitolite-admin.git
 
-rm --force $0
+rm --force "${0}"
 

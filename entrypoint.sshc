@@ -1,17 +1,12 @@
 #!/bin/bash
 
-set -e
+set -e -o pipefail
 
 # Configure: sshc
-if [[ ! -e $EP_RUN ]] ; then
-	log "Configuring $(basename $0) for first run ..."
+if [[ ! -e "${EP_RUN}" ]] ; then
+	log "Configuring $(basename "${0}") for first run ..."
 
 	# SSH user key
-	if [[ -f /root/.ssh/id_rsa ]] ; then
-		log "Skipping SSH keypair: root ..."
-	else
-		log "Generating SSH keypair: root ..."
-		ssh-keygen -f /root/.ssh/id_rsa -t rsa -N ''
-	fi
+	generate_sshkey root
 fi
 

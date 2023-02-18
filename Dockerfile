@@ -1,9 +1,21 @@
-FROM crashvb/nginx:latest
-MAINTAINER Richard Davis <crashvb@gmail.com>
+FROM crashvb/nginx:202302180021@sha256:5d51352cd78928288bc98ad1b2829f6a34e83c171b94656623eaa08616ef97fe
+ARG org_opencontainers_image_created=undefined
+ARG org_opencontainers_image_revision=undefined
+LABEL \
+	org.opencontainers.image.authors="Richard Davis <crashvb@gmail.com>" \
+	org.opencontainers.image.base.digest="sha256:5d51352cd78928288bc98ad1b2829f6a34e83c171b94656623eaa08616ef97fe" \
+	org.opencontainers.image.base.name="crashvb/nginx:202302180021" \
+	org.opencontainers.image.created="${org_opencontainers_image_created}" \
+	org.opencontainers.image.description="Image containing gitolite." \
+	org.opencontainers.image.licenses="Apache-2.0" \
+	org.opencontainers.image.source="https://github.com/crashvb/gitolite-docker" \
+	org.opencontainers.image.revision="${org_opencontainers_image_revision}" \
+	org.opencontainers.image.title="crashvb/gitolite" \
+	org.opencontainers.image.url="https://github.com/crashvb/gitolite-docker"
 
 # Install packages, download files ...
 RUN docker-apt cgi.pm gitolite3 gitweb highlight markdown locales openssl pandoc patch && \
-	git clone git://github.com/kogakure/gitweb-theme.git /usr/share/gitweb-theme && \
+	git clone https://github.com/kogakure/gitweb-theme.git /usr/share/gitweb-theme && \
 	rm --force --recursive /usr/share/gitweb-theme/.git
 
 # Configure: gitolite
@@ -13,9 +25,10 @@ RUN useradd --comment "Gitolite" --home=${GITOLITE_HOME} --shell=/bin/bash git &
 
 # Configure: gitweb
 ENV GITWEB_HOME=/usr/share/gitweb GITWEB_THEME=/usr/share/gitweb-theme
-ADD gitweb.cgi.patch ${GITWEB_HOME}/
-ADD gitweb.css.patch ${GITWEB_THEME}/
-ADD gitweb.conf.* /usr/local/share/gitweb/
+COPY gitweb.cgi.patch ${GITWEB_HOME}/
+COPY gitweb.css.patch ${GITWEB_THEME}/
+COPY gitweb.conf.* /usr/local/share/gitweb/
+# hadolint ignore=DL3003
 RUN usermod --append --groups=git www-data && \
 	(cd ${GITWEB_THEME} && ${GITWEB_THEME}/setup --install --verbose) && \
 	patch ${GITWEB_HOME}/gitweb.cgi ${GITWEB_HOME}/gitweb.cgi.patch && \
@@ -23,10 +36,10 @@ RUN usermod --append --groups=git www-data && \
 	rm ${GITWEB_HOME}/gitweb.cgi.* ${GITWEB_THEME}/gitweb.css.*
 
 # Configure: nginx
-ADD default.nginx /etc/nginx/sites-available/default
+COPY default.nginx /etc/nginx/sites-available/default
 
 # Configure: root
-ADD .gitconfig clone-gitolite-admin /root/
+COPY .gitconfig clone-gitolite-admin /root/
 
 # Configure: sshd
 RUN sed --in-place 's/^AcceptEnv LANG LC_\*$//g' /etc/ssh/sshd_config && \
@@ -34,18 +47,21 @@ RUN sed --in-place 's/^AcceptEnv LANG LC_\*$//g' /etc/ssh/sshd_config && \
 	mkdir --parents /var/run/sshd
 
 # Configure: supervisor
-ADD supervisord.sshd.conf /etc/supervisor/conf.d/sshd.conf
+COPY supervisord.sshd.conf /etc/supervisor/conf.d/sshd.conf
 
 # Configure: system
 RUN locale-gen en_US.UTF-8 && \
 	dpkg-reconfigure --frontend=noninteractive locales
 
 # Configure: entrypoint
-ADD entrypoint.gitolite /etc/entrypoint.d/30gitolite
-ADD entrypoint.gitweb /etc/entrypoint.d/40gitweb
-ADD entrypoint.sshc /etc/entrypoint.d/20sshc
-ADD entrypoint.sshd /etc/entrypoint.d/10sshd
+COPY entrypoint.gitolite /etc/entrypoint.d/30gitolite
+COPY entrypoint.gitweb /etc/entrypoint.d/40gitweb
+COPY entrypoint.sshc /etc/entrypoint.d/20sshc
+COPY entrypoint.sshd /etc/entrypoint.d/10sshd
+
+# Configure: healthcheck
+COPY healthcheck.sshd /etc/healthcheck.d/sshd
 
 EXPOSE 22/tcp
 
-VOLUME /etc/ssh /root/.ssh ${GITOLITE_HOME}
+VOLUME /etc/ssh ${GITOLITE_HOME}

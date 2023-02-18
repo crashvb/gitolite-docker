@@ -1,31 +1,20 @@
 #!/bin/bash
 
-set -e
+set -e -o pipefail
 
 # Configure: gitweb
-if [[ ! -e $EP_RUN ]] ; then
-	log "Configuring $(basename $0) for first run ..."
+if [[ ! -e "${EP_RUN}" ]] ; then
+	log "Configuring $(basename "${0}") for first run ..."
 
-	# Password ...
-	if [[ -n "$GITWEB_GENERATE_PASSWORD" ]] ; then
-		log "Generating password ..."
-		GITWEB_PASSWORD=$(pwgen --capitalize --numerals --secure -1 32)
-		install --mode=0400 /dev/null /root/gitweb_password
-		echo "GITWEB_PASSWORD=$GITWEB_PASSWORD" > /root/gitweb_password
-		export GITWEB_PASSWORD=$(openssl passwd -apr1 $GITWEB_PASSWORD)
-	elif [[ -z "$GITWEB_PASSWORD" ]] ; then
-		log "Either GITWEB_PASSWORD or GITWEB_GENERATE_PASSWORD must be defined!"
-		exit 1
-	else
-		log "Importing password ..."
-	fi
-	log "	GITWEB_PASSWORD=$GITWEB_PASSWORD"
-	echo "admin:$GITWEB_PASSWORD" > $GITWEB_HOME/.htpasswd
+	# Generate password ...
+	generate_password gitweb
+
+	echo "admin:$(openssl passwd -apr1 "${GITWEB_PASSWORD}")" > "${GITWEB_HOME}/.htpasswd"
 
 	# gitweb.conf ...
 	render_template /usr/local/share/gitweb/gitweb.conf /etc/gitweb.conf "\$GITWEB_PROJECTROOT \$GITWEB_PROJECTS_LIST"
 	
 	log "Applying ownership and permissions ..."
-	chmod 0640 $GITOLITE_HOME/projects.list
+	chmod 0640 "${GITOLITE_HOME}/projects.list"
 fi
 

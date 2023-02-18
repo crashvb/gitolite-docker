@@ -2,7 +2,7 @@
 
 ## Overview
 
-This docker image contains [gitolite](http://gitolite.com/) and [gitweb](https://git-scm.com/docs/gitweb).
+This docker image contains [gitolite](https://gitolite.com/) and [gitweb](https://git-scm.com/docs/gitweb).
 
 ## Entrypoint Scripts
 
@@ -21,10 +21,9 @@ The embedded entrypoint script is located at `/etc/entrypoint.d/40gitweb` and pe
 
  | Variable | Default Value | Description |
  | ---------| ------------- | ----------- |
- | GITWEB_PASSWORD | | The MD5 checksum (_apache variant_) of the gitweb `admin` password. This variable is not used if `$GITWEB_GENERATE_PASSWORD` is defined. |
- | GITWEB_GENERATE_PASSWORD | | Flag indicating if the `$GITWEB_PASSWORD` should be generated. |
- | GITWEB_PROJECTROOT | $GITOLITE_HOME/repositories | Absolute filesystem path which will be prepended to project path. |
- | GITWEB_PROJECTS_LIST | $GITWEB_PROJECTROOT | Name of a plain text file listing projects, or a name of directory to be scanned for projects. |
+ | GITWEB\_PASSWORD | _random_ | The MD5 checksum (_apache variant_) of the gitweb `admin` password. |
+ | GITWEB\_PROJECTROOT | $GITOLITE\_HOME/repositories | Absolute filesystem path which will be prepended to project path. |
+ | GITWEB\_PROJECTS\_LIST | $GITWEB\_PROJECTROOT | Name of a plain text file listing projects, or a name of directory to be scanned for projects. |
 
 2. Ownership and permissions are applied to the `projects.list`.
 
@@ -57,11 +56,11 @@ The embedded entrypoint script is located at `/etc/entrypoint.d/10sshd` and perf
 │  │  └─ config.d/
 │  │     └─ sshd.conf
 │  └─ gitweb.conf
-├─ root/
-│  ├─ .ssh/
-│  │  ├─ id_rsa
-│  │  └─ id_rsa.pub
-│  └─ gitweb_password
+├─ run/
+│  └─ secrets/
+│     ├─ id_rsa.root
+│     ├─ id_rsa.root.pub
+│     └─ gitweb_password
 ├─ usr/
 │  └─ share/
 │     ├─ gitolite/
