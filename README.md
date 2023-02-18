@@ -1,5 +1,10 @@
 # gitolite-docker
 
+[![version)](https://img.shields.io/docker/v/crashvb/gitolite/latest)](https://hub.docker.com/repository/docker/crashvb/gitolite)
+[![image size](https://img.shields.io/docker/image-size/crashvb/gitolite/latest)](https://hub.docker.com/repository/docker/crashvb/gitolite)
+[![linting](https://img.shields.io/badge/linting-hadolint-yellow)](https://github.com/hadolint/hadolint)
+[![license](https://img.shields.io/github/license/crashvb/gitolite-docker.svg)](https://github.com/crashvb/gitolite-docker/blob/master/LICENSE.md)
+
 ## Overview
 
 This docker image contains [gitolite](https://gitolite.com/) and [gitweb](https://git-scm.com/docs/gitweb).
@@ -51,6 +56,8 @@ The embedded entrypoint script is located at `/etc/entrypoint.d/10sshd` and perf
 │  │  ├─ 20sshc
 │  │  ├─ 30gitolite
 │  │  └─ 40gitweb
+│  ├─ healthcheck.d/
+│  │  └─ sshd
 │  ├─ ssh/
 │  ├─ supervisor/
 │  │  └─ config.d/

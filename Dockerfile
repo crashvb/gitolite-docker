@@ -1,10 +1,10 @@
-FROM crashvb/nginx:202302180021@sha256:5d51352cd78928288bc98ad1b2829f6a34e83c171b94656623eaa08616ef97fe
+FROM crashvb/nginx:202302181749@sha256:5bef122b25395e0d5d300663b8adc1678f67efaef4a3e4ad3d0a8faa3e36644f
 ARG org_opencontainers_image_created=undefined
 ARG org_opencontainers_image_revision=undefined
 LABEL \
 	org.opencontainers.image.authors="Richard Davis <crashvb@gmail.com>" \
-	org.opencontainers.image.base.digest="sha256:5d51352cd78928288bc98ad1b2829f6a34e83c171b94656623eaa08616ef97fe" \
-	org.opencontainers.image.base.name="crashvb/nginx:202302180021" \
+	org.opencontainers.image.base.digest="sha256:5bef122b25395e0d5d300663b8adc1678f67efaef4a3e4ad3d0a8faa3e36644f" \
+	org.opencontainers.image.base.name="crashvb/nginx:202302181749" \
 	org.opencontainers.image.created="${org_opencontainers_image_created}" \
 	org.opencontainers.image.description="Image containing gitolite." \
 	org.opencontainers.image.licenses="Apache-2.0" \
