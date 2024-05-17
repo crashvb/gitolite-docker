@@ -6,10 +6,18 @@ set -e -o pipefail
 if [[ ! -e "${EP_RUN}" ]] ; then
 	log "Configuring $(basename "${0}") for first run ..."
 
-	# Generate password ...
-	generate_password gitweb
-
-	echo "admin:$(openssl passwd -apr1 "${GITWEB_PASSWORD}")" > "${GITWEB_HOME}/.htpasswd"
+	# .htpasswd ...
+	path_htpasswd="${GITWEB_HOME}/.htpasswd"
+	log "Generating: ${path_htpasswd} ..."
+	install -g root -m 0644 -o root /dev/null "${path_htpasswd}"
+	export GITWEB_USERS="${GITWEB_USERS:=admin}"
+	for i in $(echo "${GITWEB_USERS}" | sed --expression="s/,/ /g"); do
+		user="${i,,}"
+		log "	${user}"
+		generate_password "gitweb_${user}"
+		var="GITWEB_${user^^}_PASSWORD"
+		htpasswd -bB "${path_htpasswd}" "${user}" "${!var}"
+	done
 
 	# gitweb.conf ...
 	render_template /usr/local/share/gitweb/gitweb.conf /etc/gitweb.conf "\$GITWEB_PROJECTROOT \$GITWEB_PROJECTS_LIST"

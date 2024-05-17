@@ -14,7 +14,7 @@ LABEL \
 	org.opencontainers.image.url="https://github.com/crashvb/gitolite-docker"
 
 # Install packages, download files ...
-RUN docker-apt cgi.pm gitolite3 gitweb highlight markdown locales openssl pandoc patch && \
+RUN docker-apt apache2-utils cgi.pm gitolite3 gitweb highlight markdown locales openssl pandoc patch && \
 	git clone https://github.com/kogakure/gitweb-theme.git /usr/share/gitweb-theme && \
 	rm --force --recursive /usr/share/gitweb-theme/.git
 

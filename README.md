@@ -26,9 +26,9 @@ The embedded entrypoint script is located at `/etc/entrypoint.d/40gitweb` and pe
 
  | Variable | Default Value | Description |
  | ---------| ------------- | ----------- |
- | GITWEB\_PASSWORD | _random_ | The MD5 checksum (_apache variant_) of the gitweb `admin` password. |
  | GITWEB\_PROJECTROOT | $GITOLITE\_HOME/repositories | Absolute filesystem path which will be prepended to project path. |
  | GITWEB\_PROJECTS\_LIST | $GITWEB\_PROJECTROOT | Name of a plain text file listing projects, or a name of directory to be scanned for projects. |
+ | GITWEB\_USERS | admin | The list of users to be allowed access. |
 
 2. Ownership and permissions are applied to the `projects.list`.
 
@@ -67,7 +67,7 @@ The embedded entrypoint script is located at `/etc/entrypoint.d/10sshd` and perf
 │  └─ secrets/
 │     ├─ id_rsa.root
 │     ├─ id_rsa.root.pub
-│     └─ gitweb_password
+│     └─ getweb_<user>_password
 ├─ usr/
 │  └─ share/
 │     ├─ gitolite/

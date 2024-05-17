@@ -1,8 +1,12 @@
 server {
-	listen 80 default;
+	listen 443 ssl http2;
 
 	root /usr/share/gitweb/;
 	index index.cgi index.html index.htm;
+
+	ssl_certificate /etc/ssl/certs/nginx.crt;
+	ssl_certificate_key /etc/ssl/private/nginx.key;
+	ssl_protocols TLSv1.3;
 
 	keepalive_timeout 60;
 
@@ -19,5 +23,8 @@ server {
 		fastcgi_pass unix:/var/run/fcgiwrap.sock;
 		gzip off;
 	}
+
+	add_header X-Frame-Options SAMEORIGIN;
+	add_header X-Content-Type-Options nosniff;
 }
 
