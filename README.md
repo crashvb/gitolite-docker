@@ -88,7 +88,6 @@ The embedded entrypoint script is located at `/etc/entrypoint.d/10sshd` and perf
 ### Volumes
 
 * `/etc/ssh` - The SSH configuration directory.
-* `/root/.ssh` - The root users SSH keypair.
 * `/var/lib/git` - The gitolite home directory.
 
 ## Development
